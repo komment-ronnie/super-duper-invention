@@ -1,5 +1,11 @@
 package com.thealgorithms.audiofilters;
 
+/**
+ * Is a filtering mechanism that takes in a sample value and processes it through a
+ * series of coefficients, producing an output value. The class has several methods
+ * for setting the coefficients and processing samples, with the `process()` method
+ * being the primary method for filtering input values.
+ */
 public class IIRFilter {
     private final int order;
     private final double[] coeffsA;
@@ -26,6 +32,22 @@ public class IIRFilter {
     }
 
     
+    /**
+     * Sets the coefficients of a and b to those passed in, checks if they are correct
+     * lengths, and then assigns them to the corresponding array indices.
+     * 
+     * @param aCoeffs 1st polynomial coefficients to be multiplied with the input signal.
+     * 
+     * * Length: `aCoeffs.length == order`, where `order` is a positive integer indicating
+     * the degree of the polynomial.
+     * * Non-zero value at index 0: `aCoeffs[0] != 0.0`.
+     * 
+     * @param bCoeffs 2nd set of coefficients that are multiplied with the input signal
+     * to produce the output signal in the given linear transformation.
+     * 
+     * * `bCoeffs` has length `order`.
+     * * All elements of `bCoeffs` are non-zero.
+     */
     public void setCoeffs(double[] aCoeffs, double[] bCoeffs) throws IllegalArgumentException {
         if (aCoeffs.length != order) {
             throw new IllegalArgumentException("aCoeffs must be of size " + order + ", got " + aCoeffs.length);
@@ -46,6 +68,15 @@ public class IIRFilter {
     }
 
   
+    /**
+     * Takes a sample value and processes it through an iterative feedback loop, using
+     * coefficients to compute the output value based on previous values of both inputs
+     * and outputs.
+     * 
+     * @param sample 0-to-1 value that is processed by the function.
+     * 
+     * @returns a calculated value for the next time step in a feedback control system.
+     */
     public double process(double sample) {
         double result = 0.0;
 

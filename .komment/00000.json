@@ -4,12 +4,12 @@
     "path": "test.java",
     "content": {
       "structured": {
-        "description": "An IIR filter class with a constructor that takes an integer parameter 'order' and initializes the filter coefficients and history buffers accordingly. The setCoeffs() method takes double arrays 'aCoeffs' and 'bCoeffs' as input and sets the corresponding filter coefficients. The process() method takes a single input sample and processes it through the filter using a recurrent feedback loop, returning the filtered output.",
+        "description": "An IIR filter class with various parameters such as order, coeffsA and coeffsB which are used for filtering. The class has a constructor, setCoeffs method, and process method. The process method takes in a sample value and applies the filter using a feedback loop to produce an output value.",
         "items": [
           {
-            "id": "1a0ecf01-2a8a-b09c-9f4e-952ac57ff090",
+            "id": "e787c5af-5e74-c7af-4b42-df7518d72e7b",
             "ancestors": [],
-            "description": "Is designed to process audio signals using a cascade of two filters, with the first filter having a feedback loop and the second filter being a low-pass filter. The class has a constructor that takes an integer parameter representing the order of the filters, and methods for setting the coefficients of the filters and processing audio samples. The `process()` method processes an audio sample by applying the two filters in sequence, using the feedback loop to store the previous output values and apply them to the next filter stage.",
+            "description": "Is a filtering mechanism that takes in a sample value and processes it through a series of coefficients, producing an output value. The class has several methods for setting the coefficients and processing samples, with the `process()` method being the primary method for filtering input values.",
             "name": "IIRFilter",
             "location": {
               "start": 3,
@@ -23,29 +23,29 @@
             "docLength": null
           },
           {
-            "id": "38d5d32d-53ca-e581-7e43-668e9ccd725b",
+            "id": "426ae2e1-8200-51b4-6844-3ef27635d475",
             "ancestors": [
-              "1a0ecf01-2a8a-b09c-9f4e-952ac57ff090"
+              "e787c5af-5e74-c7af-4b42-df7518d72e7b"
             ],
-            "description": "Sets coefficients for a polynomial of order at most `order`. It checks the lengths of input arrays `aCoeffs` and `bCoeffs`, and ensures that all non-zero elements in `aCoeffs` are not equal to zero. The function then assigns the values of `aCoeffs` and `bCoeffs` to corresponding coefficients in an array `coeffsA`.",
+            "description": "Sets the coefficients of a and b to those passed in, checks if they are correct lengths, and then assigns them to the corresponding array indices.",
             "params": [
               {
                 "name": "aCoeffs",
                 "type_name": "double[]",
-                "description": "1D array of coefficients for the polynomial used in the multiplication operation.\n\n* Length: `aCoeffs.length` must be equal to `order`.\n* Non-zero value: The first element of `aCoeffs`, `aCoeffs.get(0)`, cannot be zero.",
+                "description": "1st polynomial coefficients to be multiplied with the input signal.\n\n* Length: `aCoeffs.length == order`, where `order` is a positive integer indicating the degree of the polynomial.\n* Non-zero value at index 0: `aCoeffs[0] != 0.0`.",
                 "complex_type": true
               },
               {
                 "name": "bCoeffs",
                 "type_name": "double[]",
-                "description": "2nd polynomial's coefficients, which must have the same length as the `aCoeffs` parameter and be non-zero.\n\n* Length: `bCoeffs.length` must equal to the order `order`.\n* All elements of `bCoeffs` must have a non-zero value.",
+                "description": "2nd set of coefficients that are multiplied with the input signal to produce the output signal in the given linear transformation.\n\n* `bCoeffs` has length `order`.\n* All elements of `bCoeffs` are non-zero.",
                 "complex_type": true
               }
             ],
             "usage": {
               "language": "java",
-              "code": "public void exampleUsage() {\n        IIRFilter filter = new IIRFilter(3);\n        double[] aCoeffs = { 1, 2, -4 };\n        double[] bCoeffs = { 0.5, 1, -2 };\n        filter.setCoeffs(aCoeffs, bCoeffs);\n    }\n",
-              "description": "\nIn this example usage of the setCoeffs method, aCoeffs and bCoeffs are both inputs of type double[]. The first input, aCoeffs, is an array with length 3. Each element within the array corresponds to the coefficients in the numerator of the transfer function that represents the filter. In this case, the numerator coefficients are {1, 2, -4}. The second input, bCoeffs, is also an array with length 3. Each element within the array corresponds to the coefficients in the denominator of the transfer function that represents the filter. In this case, the denominator coefficients are {0.5, 1, -2}. These coefficients will be used to calculate the IIR filter's output given its input."
+              "code": "public static void main(String[] args) {\n        IIRFilter filter = new IIRFilter(4);\n        double[] aCoeffs = {1, 2, 3, 4};\n        double[] bCoeffs = {1, 2, 3, 4};\n        filter.setCoeffs(aCoeffs, bCoeffs);\n    }\n",
+              "description": ""
             },
             "name": "setCoeffs",
             "location": {
@@ -60,28 +60,28 @@
             "docLength": null
           },
           {
-            "id": "ad9c46af-9dc9-249f-8446-7970ec0cc44d",
+            "id": "c6e69892-30f6-6da6-2046-d64a314ba857",
             "ancestors": [
-              "1a0ecf01-2a8a-b09c-9f4e-952ac57ff090"
+              "e787c5af-5e74-c7af-4b42-df7518d72e7b"
             ],
-            "description": "Takes a input `sample` and performs a sequence of calculations using coefficients, previous history values, and feedback loops to produce an output value.",
+            "description": "Takes a sample value and processes it through an iterative feedback loop, using coefficients to compute the output value based on previous values of both inputs and outputs.",
             "params": [
               {
                 "name": "sample",
                 "type_name": "double",
-                "description": "initial value of the system's state that is processed by the function.",
+                "description": "0-to-1 value that is processed by the function.",
                 "complex_type": false
               }
             ],
             "returns": {
               "type_name": "double",
-              "description": "a calculated value representing the current state of the system.",
+              "description": "a calculated value for the next time step in a feedback control system.",
               "complex_type": false
             },
             "usage": {
               "language": "java",
-              "code": "public class Test {\n    public static void main(String[] args) {\n        IIRFilter filter = new IIRFilter(3);\n        double sample = 10.0;\n        double result = filter.process(sample);\n        System.out.println(\"Result: \" + result);\n    }\n}\n",
-              "description": ""
+              "code": "IIRFilter filter = new IIRFilter(4);\nfilter.setCoeffs(new double[] {1, 2, 3, 4}, new double[] {5, 6, 7, 8});\ndouble sample = 10;\ndouble output = filter.process(sample);\nSystem.out.println(output); // Output: 94.0\n",
+              "description": "\nThe example first initializes an IIRFilter object with a order of 4 and sets its coefficients using the setCoeffs method. It then defines a sample value of 10 and passes it to the process method to get an output value. The output is then printed to the console, resulting in a value of 94.0 being printed."
             },
             "name": "process",
             "location": {
