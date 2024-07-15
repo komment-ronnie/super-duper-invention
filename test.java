@@ -1,11 +1,5 @@
 package com.thealgorithms.audiofilters;
 
-/**
- * Processes audio signals using a IIR filter structure. It takes in an integer
- * parameter representing the filter's order and allows for setting the coefficients
- * A and B through separate methods. The process method applies the filter to a given
- * sample, feeding back the output to the input, and returns the processed result.
- */
 public class IIRFilter {
     private final int order;
     private final double[] coeffsA;
@@ -32,22 +26,6 @@ public class IIRFilter {
     }
 
     
-    /**
-     * Sets the coefficients for a polynomial transformation between two arrays of doubles,
-     * verifying their lengths and values before updating the internal coefficients array.
-     * 
-     * @param aCoeffs 1st polynomial coefficients to be multiplied with the other polynomial
-     * `bCoeffs`.
-     * 
-     * * Length: `aCoeffs.length` must be equal to `order`, which is a constant in the function.
-     * * Non-zero value at index 0: The element at index 0 of `aCoeffs` cannot be zero.
-     * 
-     * @param bCoeffs 2nd polynomial's coefficients, which must have the same length as
-     * the `aCoeffs` array and be non-zero.
-     * 
-     * * `bCoeffs` is a double array of length `order`.
-     * * The values in `bCoeffs` must be non-zero.
-     */
     public void setCoeffs(double[] aCoeffs, double[] bCoeffs) throws IllegalArgumentException {
         if (aCoeffs.length != order) {
             throw new IllegalArgumentException("aCoeffs must be of size " + order + ", got " + aCoeffs.length);
@@ -68,15 +46,6 @@ public class IIRFilter {
     }
 
   
-    /**
-     * Processes a given input `sample` using a recurrent neural network (RNN) architecture,
-     * computing the output based on previous inputs and coefficients.
-     * 
-     * @param sample initial value of the system being modeled, which is fed into the
-     * feedback loop and influenced by the processing done in the function.
-     * 
-     * @returns a double value representing the result of the recursive calculation.
-     */
     public double process(double sample) {
         double result = 0.0;
 
