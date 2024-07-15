@@ -1,8 +1,9 @@
-/**
- * @description Prints `0` to the console.
- */
-const fn = () => {
-  console.log(0);
+const webhookHasAllPermissions = (webhook) => {
+  let hasAll = true;
+  WEBHOOK_PERMISSIONS.forEach((permission) => {
 
-  
-}
+    console.log({ hasAll, permission, hasthis: webhook[permission] });
+    hasAll = hasAll && webhook[permission];
+  });
+  return hasAll;
+};
